@@ -1,0 +1,127 @@
+\documentclass[]{article}
+\usepackage[margin=1in]{geometry}
+
+%opening
+\title{CS-377 Parallel Programming\\
+Textbook Ch. 2 Exercises}
+\author{Eliot Cowley}
+
+\begin{document}
+
+\maketitle
+
+\begin{description}
+
+\item[2.] Construct a scenario for Algorithm 2.9 in which the final value of \texttt{n} is 10.
+
+See attached page.
+
+\item[3.] Construct a scenario for Algorithm 2.9 in which the final value of \texttt{n} is 2.
+
+See attached page.
+
+\item[4.] For positive values of \texttt{K}, what are the possible final values of \texttt{n} in the following algorithm?
+
+\texttt{-K}, 0, \texttt{K}.
+
+\end{description}
+
+\begin{table}[h]
+\begin{tabular}{llll}
+\textbf{Process} & \textbf{n Value} & \textbf{p.temp Value} & \textbf{q.temp Value} \\
+p1               & n = 0            & p.temp;               & q.temp;               \\
+q1               & n = 0;           & p.temp;               & q.temp;               \\
+p2               & n = 0;           & p.temp = 0;           & q.temp;               \\
+q2               & n = 0;           & p.temp = 0;           & q.temp = 0;           \\
+p3               & n = 1;           & p.temp = 0;           & q.temp = 0;           \\
+p2               & n = 1;           & p.temp = 1;           & q.temp = 0;           \\
+p3               & n = 2;           & p.temp = 1;           & q.temp = 0;           \\
+p2               & n = 2;           & p.temp = 2;           & q.temp = 0;           \\
+p3               & n = 3;           & p.temp = 2;           & q.temp = 0;           \\
+p2               & n = 3;           & p.temp = 3;           & q.temp = 0;           \\
+p3               & n = 4;           & p.temp = 3;           & q.temp = 0;           \\
+p2               & n = 4;           & p.temp = 4;           & q.temp = 0;           \\
+p3               & n = 5;           & p.temp = 4;           & q.temp = 0;           \\
+p2               & n = 5;           & p.temp = 5;           & q.temp = 0;           \\
+p3               & n = 6;           & p.temp = 5;           & q.temp = 0;           \\
+p2               & n = 6;           & p.temp = 6;           & q.temp = 0;           \\
+p3               & n = 7;           & p.temp = 6;           & q.temp = 0;           \\
+p2               & n = 7;           & p.temp = 7;           & q.temp = 0;           \\
+p3               & n = 8;           & p.temp = 7;           & q.temp = 0;           \\
+p2               & n = 8;           & p.temp = 8;           & q.temp = 0;           \\
+p3               & n = 9;           & p.temp = 8;           & q.temp = 0;           \\
+p2               & n = 9;           & p.temp = 9;           & q.temp = 0;           \\
+p3               & n = 10;          & p.temp = 9;           & q.temp = 0;           \\
+q3               & n = 1;           & p.temp = 9;           & q.temp = 0;           \\
+q2               & n = 1;           & p.temp = 9;           & q.temp = 1;           \\
+q3               & n = 2;           & p.temp = 9;           & q.temp = 1;           \\
+q2               & n = 2;           & p.temp = 9;           & q.temp = 2;           \\
+q3               & n = 3;           & p.temp = 9;           & q.temp = 2;           \\
+q2               & n = 3;           & p.temp = 9;           & q.temp = 3;           \\
+q3               & n = 4;           & p.temp = 9;           & q.temp = 3;           \\
+q2               & n = 4;           & p.temp = 9;           & q.temp = 4;           \\
+q3               & n = 5;           & p.temp = 9;           & q.temp = 4;           \\
+q2               & n = 5;           & p.temp = 9;           & q.temp = 5;           \\
+q3               & n = 6;           & p.temp = 9;           & q.temp = 5;           \\
+q2               & n = 6;           & p.temp = 9;           & q.temp = 6;           \\
+q3               & n = 7;           & p.temp = 9;           & q.temp = 6;           \\
+q2               & n = 7;           & p.temp = 9;           & q.temp = 7;           \\
+q3               & n = 8;           & p.temp = 9;           & q.temp = 7;           \\
+q2               & n = 8;           & p.temp = 9;           & q.temp = 8;           \\
+q3               & n = 9;           & p.temp = 9;           & q.temp = 8;           \\
+q2               & n = 9;           & p.temp = 9;           & q.temp = 9;           \\
+q3               & n = 10;          & p.temp = 9;           &q.temp = 9;                      
+\end{tabular}
+\caption{Exercise 2.}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{llll}
+\textbf{Process} & \textbf{n Value} & \textbf{p.temp Value} & \textbf{q.temp Value} \\
+p1               & n = 0            & p.temp;               & q.temp;               \\
+q1               & n = 0            & p.temp;               & q.temp;               \\
+p2               & n = 0            & p.temp = 0            & q.temp;               \\
+q2               & n = 0            & p.temp = 0            & q.temp = 0            \\
+p3               & n = 1            & p.temp = 0            & q.temp = 0            \\
+p2               & n = 1            & p.temp = 1            & q.temp = 0            \\
+p3               & n = 2            & p.temp = 1            & q.temp = 0            \\
+p2               & n = 2            & p.temp = 2            & q.temp = 0            \\
+p3               & n = 3            & p.temp = 2            & q.temp = 0            \\
+p2               & n = 3            & p.temp = 3            & q.temp = 0            \\
+p3               & n = 4            & p.temp = 3            & q.temp = 0            \\
+p2               & n = 4            & p.temp = 4            & q.temp = 0            \\
+p3               & n = 5            & p.temp = 4            & q.temp = 0            \\
+p2               & n = 5            & p.temp = 5            & q.temp = 0            \\
+p3               & n = 6            & p.temp = 5            & q.temp = 0            \\
+p2               & n = 6            & p.temp = 6            & q.temp = 0            \\
+p3               & n = 7            & p.temp = 6            & q.temp = 0            \\
+p2               & n = 7            & p.temp = 7            & q.temp = 0            \\
+p3               & n = 8            & p.temp = 7            & q.temp = 0            \\
+p2               & n = 8            & p.temp = 8            & q.temp = 0            \\
+p3               & n = 9            & p.temp = 8            & q.temp = 0            \\
+q3               & n = 1            & p.temp = 8            & q.temp = 0            \\
+p2               & n = 1            & p.temp = 1            & q.temp = 0            \\
+q2               & n = 1            & p.temp = 1            & q.temp = 1            \\
+q3               & n = 2            & p.temp = 1            & q.temp = 1            \\
+q2               & n = 2            & p.temp = 1            & q.temp = 2            \\
+q3               & n = 3            & p.temp = 1            & q.temp = 2            \\
+q2               & n = 3            & p.temp = 1            & q.temp = 3            \\
+q3               & n = 4            & p.temp = 1            & q.temp = 3            \\
+q2               & n = 4            & p.temp = 1            & q.temp = 4            \\
+q3               & n = 5            & p.temp = 1            & q.temp = 4            \\
+q2               & n = 5            & p.temp = 1            & q.temp = 5            \\
+q3               & n = 6            & p.temp = 1            & q.temp = 5            \\
+q2               & n = 6            & p.temp = 1            & q.temp = 6            \\
+q3               & n = 7            & p.temp = 1            & q.temp = 6            \\
+q2               & n = 7            & p.temp = 1            & q.temp = 7            \\
+q3               & n = 8            & p.temp = 1            & q.temp = 7            \\
+q2               & n = 8            & p.temp = 1            & q.temp = 8            \\
+q3               & n = 9            & p.temp = 1            & q.temp = 8            \\
+q2               & n = 9            & p.temp = 1            & q.temp = 9            \\
+q3               & n = 10           & p.temp = 1            & q.temp = 9            \\
+p3               & n = 2            & p.temp = 1            & q.temp = 9                      
+\end{tabular}
+\caption{Exercise 3.}
+\end{table}
+
+\end{document}

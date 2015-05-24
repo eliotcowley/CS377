@@ -1,0 +1,24 @@
+FindMax Write-Up
+Author: Eliot Cowley
+Date: 2/6/2015
+Class: CS377 Parallel Programming
+
+	This first programming assignment introduced me to the C programming language, and made me learn what are likely to be very important concepts, including using pointers, reading input, 
+and looping through arrays. Although finding the maximum integer in an array of integers is a fairly straightforward problem, one that I could confidently do in a language that I already know like
+Java, doing it in a completely new language was a challenge. C is similar to many of the languages that I use already, so it wasn’t that huge of a leap, but it has some peculiarities that I 
+struggled with and will likely continue to struggle with for some time.
+	Pointers in particular are something that I struggled with. The concept of a pointer is a bit foreign to me, as I haven’t used them in other languages before, only heard about them during 
+my education. Additionally, the syntax for pointers was kind of puzzling, such as knowing when to use an asterisk or an ampersand. After going through several online tutorials on pointers I finally
+started to grasp them, but using pointers on arrays was still pretty tricky. I also had trouble with memory allocation, although I grasped the concept better.
+	I couldn’t start this assignment without knowing C, so I started reading The C Programming Language by Kernighan and Ritchie. I read the first two chapters, following along with the sample
+code and doing the exercises. I pretty much understood most of it, as it was more or less standard fare for a programming language. But after reading all that, I still couldn’t start the assignment
+because I didn’t know how to properly read input, or how to use pointers and allocate memory. This frustrated me, because the things I needed to learn to start the assignment wouldn’t come until 
+much later in the book, and I didn’t want to have to read the entire thing just to start my first assignment. It wasn’t too much of a problem, since I was able to find resources online to help me.
+But I would rather have had the assignment follow along more closely with the book.
+	I know this isn’t a class about C, but it would have been nice to get a primer on the language. How it differs from other programming languages, its syntax, pointers—these are things I 
+would have liked to learn a little about in class. Even if we just had two or three lectures devoted to it, that would have been enough to get started. Learning new languages is usually pretty 
+easy, especially modern languages since they all somewhat resemble each other, but C is kind of a different beast, especially if you haven’t programmed in any of its variants before. With C, it’s 
+important to know how to use pointers, allocate memory, and when to free up said memory. Learning these things would have been tremendously helpful.
+	All in all, however, I enjoyed this assignment. It was a good way to introduce me to C, which was easy enough to jump into. The book may be dense, but it’s good. When I ran into trouble, 
+there were enough resources online to help me. I also kind of wish that we didn’t have to use Vim, since it is kind of difficult for me to use, but perhaps it’s a useful tool to learn as a 
+programmer, since it is so widely used.

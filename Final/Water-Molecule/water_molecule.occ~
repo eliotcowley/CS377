@@ -1,0 +1,75 @@
+#USE "course.lib"
+
+VAL INT hydrogen IS 0:
+VAL INT oxygen IS 1:
+VAL INT water IS 2:
+
+PROC hydrogen.1 (CHAN INT out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! hydrogen
+      out.print ! hydrogen
+:
+
+PROC hydrogen.2 (CHAN INT out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! hydrogen
+      out.print ! hydrogen
+:
+
+PROC oxygen (CHAN INT out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! oxygen
+      out.print ! oxygen
+:
+
+PROC water (CHAN INT in.hydrogen.1?, in.hydrogen.2?, in.oxygen?, out.print!)
+  INT hydrogen.1, hydrogen.2, oxygen:
+  WHILE TRUE
+    SEQ
+      PAR
+        in.hydrogen.1 ? hydrogen.1
+        in.hydrogen.2 ? hydrogen.2
+        in.oxygen ? oxygen
+      out.print ! water
+:
+
+PROC pause (VAL INT delay)
+  TIMER tim:
+  INT t:
+  SEQ
+    tim ? t
+    tim ? AFTER t PLUS delay
+:
+
+PROC print.stream (VAL INT delay, CHAN INT in.hydrogen.1?, in.hydrogen.2?, 
+in.oxygen?, in.water?, CHAN BYTE out!)
+  WHILE TRUE
+    INT x:
+    SEQ
+      ALT
+        in.hydrogen.1 ? x
+          out.string ("Produced hydrogen atom*c*n", 0, out!)
+        in.hydrogen.2 ? x
+          out.string ("Produced hydrogen atom*c*n", 0, out!)
+        in.oxygen ? x
+          out.string ("Produced oxygen atom*c*n", 0, out!)
+        in.water ? x
+          out.string ("Produced water molecule*c*n", 0, out!)
+      pause (delay)
+:
+
+PROC water.molecule (CHAN BYTE keyboard?, screen!, error!)
+  CHAN INT a, b, print.hydrogen.1, print.hydrogen.2, c, print.oxygen, 
+  print.water:
+  WHILE TRUE
+    PAR
+      hydrogen.1 (a!, print.hydrogen.1!)
+      hydrogen.2 (b!, print.hydrogen.2!)
+      oxygen (c!, print.oxygen!)
+      water (a?, b?, c?, print.water!)
+      print.stream(100000, print.hydrogen.1?, print.hydrogen.2?, print.oxygen?, 
+      print.water?, screen!)
+:

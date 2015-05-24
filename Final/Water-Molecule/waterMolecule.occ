@@ -1,0 +1,133 @@
+-- Eliot Cowley
+-- 5/15/2015
+-- Professor Smith
+-- CS-377 Parallel Programming
+-- Final Assignment, Problem 2
+
+-- This program is broken down into two hydrogen processes, an oxygen process,
+-- a water process, a pause process, a print.stream process, and the main
+-- process. The atom processes (hydrogen and oxygen) simply output integers
+-- representing their respective atoms. They are hooked up to both the water
+-- process and the print process. The water process takes in atoms and, once it
+-- has two hydrogens and an oxygen, outputs a water integer to print.stream.
+-- print.stream prints out whenever an atom or molecule is created.
+--
+-- The program is run in parallel whenever possible. The atom processes output 
+-- to both water and print.stream in parallel. water reads in atoms in parallel,
+-- and only once it has read in all three does it output to print.stream, which
+-- is done sequentially after the reads. print.stream uses ALT to alternate over
+-- all four processes, reading in and printing out arbitrarily. However, it only
+-- prints if it has read something in, thus ensuring its accuracy.
+--
+-- There are a couple of curious things about print.stream that create output
+-- different from what I expected. First, water molecules are sometimes printed
+-- out before two hydrogens and an oxygen have been printed out. I initially
+-- thought this meant my program was wrong, but it actually makes sense. ALT
+-- selects guards arbitrarily, and there is a pause after every print, so even
+-- though they may not have been printed out yet, there may have been two 
+-- hydrogens and an oxygen already produced which formed a water molecule, which
+-- subsequently gets printed out while the other atoms are still waiting. If I
+-- wanted to make for more accurate printing, I could have put a delay in the
+-- water process to make sure that it gets formed and then printed after the
+-- atoms had. Second, print.stream always seems to print in the same order. 
+-- There is a start-up section where it first gets going, and then it settles
+-- into a pattern of water, oxygen, hydrogen, hydrogen. I got a similar result, 
+-- albeit with different patterns, when I switched around the order of the 
+-- guards. Additionally, when I tried using PRI ALT, it eventually settled into 
+-- printing out in order of highest to lowest priority. The reason for ALT 
+-- choosing processes with seeming regularity is likely because ALT is choosing 
+-- processes fairly, giving each process a chance to execute in order to avoid 
+-- starvation. Deadlock is avoided because there is no contention for 
+-- resources; the atoms produce integers for both water and print.stream 
+-- equally.
+
+#USE "course.lib"
+
+-- Declare constants to represent hydrogen, oxygen, and water as integers
+VAL INT hydrogen IS 0:
+VAL INT oxygen IS 1:
+VAL INT water IS 2:
+
+--* The first hydrogen process. Continually produces integers representing
+--* hydrogen, which it passes to both water and print.stream.
+PROC hydrogen.1 (CHAN INT out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! hydrogen
+      out.print ! hydrogen
+:
+
+--* The second hydrogen process. Acts exactly the same as the first.
+PROC hydrogen.2 (CHAN INT out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! hydrogen
+      out.print ! hydrogen
+:
+
+--* Continually produces oxygen for both the water and print.stream processes.
+PROC oxygen (CHAN INT out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! oxygen
+      out.print ! oxygen
+:
+
+--* Reads in hydrogen from the first and second hydrogen processes and oxygen
+--* from the oxygen process, and then sends water to print.stream.
+PROC water (CHAN INT in.hydrogen.1?, in.hydrogen.2?, in.oxygen?, out.print!)
+  INT hydrogen.1, hydrogen.2, oxygen:
+  WHILE TRUE
+    SEQ
+      PAR
+        in.hydrogen.1 ? hydrogen.1
+        in.hydrogen.2 ? hydrogen.2
+        in.oxygen ? oxygen
+      out.print ! water
+:
+
+--* Pauses the program for a time.
+--*
+--* @param delay : Amount of milliseconds to pause the program.
+PROC pause (VAL INT delay)
+  TIMER tim:
+  INT t:
+  SEQ
+    tim ? t
+    tim ? AFTER t PLUS delay
+:
+
+--* Prints to the screen when atoms and molecules have been produced,
+--* arbitrarily reading in from all four processes.
+--*
+--* @param delay : Amount of milliseconds to pause the program after each print.
+PROC print.stream (VAL INT delay, CHAN INT in.hydrogen.1?, in.hydrogen.2?, 
+in.oxygen?, in.water?, CHAN BYTE out!)
+  WHILE TRUE
+    INT x:
+    SEQ
+      ALT
+        in.hydrogen.1 ? x
+          out.string ("Produced hydrogen atom*c*n", 0, out!)
+        in.hydrogen.2 ? x
+          out.string ("Produced hydrogen atom*c*n", 0, out!)
+        in.oxygen ? x
+          out.string ("Produced oxygen atom*c*n", 0, out!)
+        in.water ? x
+          out.string ("Produced water molecule*c*n", 0, out!)
+      pause (delay)
+:
+
+--* The main process.
+PROC waterMolecule (CHAN BYTE keyboard?, screen!, error!)
+  CHAN INT a, b, print.hydrogen.1, print.hydrogen.2, c, print.oxygen, 
+  print.water:
+  WHILE TRUE
+    PAR
+      hydrogen.1 (a!, print.hydrogen.1!)
+      hydrogen.2 (b!, print.hydrogen.2!)
+      oxygen (c!, print.oxygen!)
+      water (a?, b?, c?, print.water!)
+      print.stream(100000, print.hydrogen.1?, print.hydrogen.2?, print.oxygen?, 
+      print.water?, screen!)
+:

@@ -1,0 +1,58 @@
+=begin
+
+Filename: producer.rb
+Author: Eliot Cowley
+Class: CS-377
+Date: 5/12/15
+Professor: Marc Smith
+
+This program is modelled off of the Producer process on slide 12 of the Rinda
+lecture. Instead of having a separate init program, I simply have producer do 
+all the initializing of tuples. First n (the size of the buffer) is initialized
+to 16 and then written to tuple space. Then n tuples of "empty" are written to
+represent the buffer. Finally, front and rear are initialized to 0. After all
+the initializations are done, it starts producing. I limit it to producing a max
+of n*2 items so it doesn't go on ad infinitum. First, the variable i is 
+initialized to 0. Then it takes an "empty" from tuple space (essentially 
+P(empty)). Then it gets the value of rear and writes the value i at the rear 
+position in the buffer, printing it to the screen as well. rear is incremented
+by 1 (mod n, so that we don't have an out of bounds error), a "full" tuple is
+written for the consumer to take, and i is incremented by 1.
+
+=end
+
+require 'rinda/rinda'
+
+URI = "druby://localhost:67671"
+DRb.start_service
+ts = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, URI))
+
+# size of buffer
+n = 16
+ts.write(["n", n])
+
+# int buf[n]
+n.times do
+  ts.write(["empty"])
+end
+
+# int front = 0
+ts.write(["front", 0])
+
+# int rear = 0
+ts.write(["rear", 0])
+
+puts("Tuple space initialized")
+
+# produce
+i = 0
+max = n * 2
+max.times do
+  ts.take(["empty"])
+  rear = ts.take(["rear", Numeric])[1]
+  ts.write(["buf", rear, i])
+  puts("Produced value #{i}")
+  ts.write(["rear", (rear+1)%n])
+  ts.write(["full"])
+  i += 1
+end

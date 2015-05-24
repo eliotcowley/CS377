@@ -1,0 +1,55 @@
+=begin
+
+Filename: producer.rb
+Author: Eliot Cowley
+Class: CS-377
+Date: 5/12/15
+Professor: Marc Smith
+Command-line instructions: ruby producer.rb
+Run server.rb first in one terminal, then producer.rb in another, then 
+consumer.rb in another
+
+
+
+=end
+
+require 'rinda/rinda'
+
+URI = "druby://localhost:67671"
+DRb.start_service
+ts = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, URI))
+
+# buffer
+ts.write(["buf", nil])
+
+# capacity of producer/consumer arrays
+ts.write(["n", 80])
+
+# producer counter
+ts.write(["p", 0])
+
+# consumer counter
+ts.write(["c", 0])
+
+# fill out array
+array = Array.new(ts.read(["n", nil])[1])
+i = 0
+while i < array.length
+  array[i] = i
+  i = i + 1
+end
+
+# write values to buffer
+puts "Producer looping..."
+loop do
+	while (ts.read(["p", nil])[1] < ts.read(["n", nil])[1])
+	  if ts.read(["p", nil])[1] === ts.read(["c", nil])[1]
+	    p = ts.take(["p", nil])[1]
+	    ts.write(["buf", array[p]])
+	    puts("Value #{array[p]} produced")
+	    p = p + 1
+	    ts.write(["p", p])
+	  end
+	end
+end
+

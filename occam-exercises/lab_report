@@ -1,0 +1,55 @@
+Assignment 5 - occam Exercises
+Eliot Cowley
+5/3/2015
+CMPU-377 - Parallel Programming
+Professor Smith
+
+Firstly, I would like to apologize for this assignment being late. Thank you
+for allowing for a relatively fluid deadline.
+
+This assignment was a little intimidating at first. I had never programmed in
+occam before, so the syntax was all new. But more than that, occam is unlike
+any programming language I have ever used before. Most of the languages I use,
+such as Java, C, and C#, are object-oriented. occam, on the other hand, is 
+process-oriented. Processes are kind of like methods in Java--they take in 
+parameters as input and return some kind of output. However these are processes,
+not objects, so instead of the program acting upon them, the processes 
+themselves are simply reading input and producing output along channels. As the
+programmer, you have to hook them up together like so many Legos so that they
+work as intended.
+
+Most of my time was spent getting used to occam and understanding how it works.
+Once I had familiarized myself enough, I stopped getting compiler errors and
+managed to actually get my programs to work. It really wasn't as hard as I 
+had initially thought it would be. 
+
+One thing that was difficult, however, was figuring out how to set up the
+differentiate process in Exercise 2. At first, I simply set it up exactly like
+integrate, only with a minus process instead of plus. I went through how it 
+would work in my notes, and it seemed like it should. However, this didn't work
+as intended, and was giving me weird patterns of numbers that I couldn't make
+much sense of. But once I thought about it some more and got some help from Cat,
+I realized why it was wrong and how I needed to fix it. That is probably one of
+the most frustrating parts of my experience with occam so far--you have to 
+really fiddle with the channels and how they are hooked up, and even if it 
+seems like your setup should work theoretically, often enough it won't. 
+Understanding why and how to fix it is the difficult part.
+
+Drawing diagrams for the different processes was very helpful in understanding
+how they work. Simply reading the code can sometimes be a bit confusing and
+overwhelming, so having the diagrams as guides was invaluable.
+
+Another thing that was a little frustrating was the use of SEQ and PAR. It's
+amazing that with a simple 3-letter keyword a programmer can switch between the
+two, but in practice it doesn't always work as cleanly as I'd hoped. For 
+instance, it took me a while to realize that I had forgotten to put an 
+assignment statement under a SEQ, because the compiler error simply said
+"incorrect indentation." Speaking of indentation, the rule that you need exactly
+2 spaces for indenting every time there is a PAR, SEQ, loop, etc. was a bit
+annoying. I prefer Java's curly braces.
+
+All in all, however, I enjoyed this assignment. Though it frustrated me a bit,
+occam is a very interesting language and a model of how easy it should be to
+switch between sequential and parallel programming. When a language is designed
+from the ground up with parallel programming in mind, I suppose it should come
+as no surprise.

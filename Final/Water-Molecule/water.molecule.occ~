@@ -1,0 +1,80 @@
+#USE "course.lib"
+
+VAL []BYTE hydrogen IS "hydrogen":
+VAL []BYTE oxygen IS "oxygen":
+VAL []BYTE water IS "water":
+
+PROC hydrogen.1 (CHAN [8]BYTE out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! hydrogen
+      out.print ! hydrogen
+:
+
+PROC hydrogen.2 (CHAN [8]BYTE out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! hydrogen
+      out.print ! hydrogen
+:
+
+PROC oxygen (CHAN [6]BYTE out!, out.print!)
+  WHILE TRUE
+    PAR
+      out ! oxygen
+      out.print ! oxygen
+:
+
+PROC water (CHAN [8]BYTE in.hydrogen.1?, in.hydrogen.2?,
+CHAN [6]BYTE in.oxygen?, CHAN [5]BYTE out.print!)
+  [8]BYTE hydrogen.1, hydrogen.2: 
+  [6]BYTE oxygen:
+  WHILE TRUE
+    SEQ
+      PAR
+        in.hydrogen.1 ? hydrogen.1
+        in.hydrogen.2 ? hydrogen.2
+        in.oxygen ? oxygen
+      out.print ! water
+:
+
+PROC pause (VAL INT delay)
+  TIMER tim:
+  INT t:
+  SEQ
+    tim ? t
+    tim ? AFTER t PLUS delay
+:
+
+PROC print.stream (VAL INT delay, CHAN [8]BYTE in.hydrogen.1?, in.hydrogen.2?, 
+CHAN [6]BYTE in.oxygen?, CHAN [5]BYTE in.water?, CHAN BYTE out!)
+  WHILE TRUE
+    [8]BYTE str.hydrogen:
+    [6]BYTE str.oxygen:
+    [5]BYTE str.water:
+    SEQ
+      ALT
+        in.hydrogen.1 ? str.hydrogen
+          out.string ("Produced hydrogen atom*c*n", 0, out!)
+        in.hydrogen.2 ? str.hydrogen
+          out.string ("Produced hydrogen atom*c*n", 0, out!)
+        in.oxygen ? str.oxygen
+          out.string ("Produced oxygen atom*c*n", 0, out!)
+        in.water ? str.water
+          out.string ("Produced water molecule*c*n", 0, out!)
+      pause (delay)
+:
+
+PROC water.molecule (CHAN BYTE keyboard?, screen!, error!)
+  CHAN [8]BYTE a, b, print.hydrogen.1, print.hydrogen.2: 
+  CHAN [6]BYTE c, print.oxygen: 
+  CHAN [5]BYTE print.water:
+  WHILE TRUE
+    PAR
+      hydrogen.1 (a!, print.hydrogen.1!)
+      hydrogen.2 (b!, print.hydrogen.2!)
+      oxygen (c!, print.oxygen!)
+      water (a?, b?, c?, print.water!)
+      print.stream(100000, print.hydrogen.1?, print.hydrogen.2?, print.oxygen?, 
+      print.water?, screen!)
+:
